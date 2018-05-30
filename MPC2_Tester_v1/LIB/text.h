@@ -1,0 +1,324 @@
+#ifndef __TEXT_H
+#define __TEXT_H
+
+// MessageStrings ----------------------------------------------------------
+enum {
+  TXT_COW_TRAFFIC_STOPPED = 0,                             // service items, eeprom
+  TXT_ENTR_GATE_LOCKED,
+  TXT_EXIT_GATE_LOCKED,
+  TXT_COMM_ERR_IC08,
+  TXT_COMM_ERR_IC09,
+  TXT_COMM_ERR_IC13,
+  TXT_COMM_ERR_VC4,
+  TXT_KEY_MODE_ERR,
+  TXT_KEY_HOLD_ERR,
+  TXT_ENTR_GATE_OPEN,
+  TXT_EXIT_GATE_OPEN,
+  TXT_NO_ENTR_OPEN,
+  TXT_MSG_MANUAL_CONTROL,
+  TXT_MSG_SEMI_AUTO,
+  TXT_MSG_FULL_AUTO,
+  TXT_MSG_FULL_AUTO_NO_SENSOR,
+  TXT_MSG_I2_LOW,
+  TXT_COMM_INIT_VC4
+};
+
+
+// ServiceTextStrings ----------------------------------------------------------
+enum {
+  TXT_VERSION_ROM = 0,                             // service items, eeprom
+  TXT_VERSION_APPL,
+  TXT_PRG_VRS_13,
+  TXT_PRG_VRS_09,
+  TXT_PRG_VRS_08,
+  TXT_LANGUAGE,
+  TXT_ADDRESS,
+  TXT_ADDRESS2,
+  TXT_MM_TYPE,
+  TXT_COMM_PROT,
+  TXT_SWITCH_OFF,                                  // 10
+  TXT_CAL_EE1,
+  TXT_CAL_EE2,
+  TXT_CAL_EE3,
+  TXT_CAL_EE4,
+  TXT_MM_COR_NIV1,
+  TXT_MM_COR_NIV2,
+  TXT_MM_COR_MEM,
+  TXT_MM_SENSOR_MEM,
+  TXT_MM_OFFSET_MAN,
+  TXT_MM_WATER_TEST_MAN,                           // 20
+  TXT_DISPLAY_TIME,
+  TXT_GATE_SWITCH_TIME,
+  TXT_NEUTRAL_TIME1,
+  TXT_NEUTRAL_TIME2,
+  TXT_NEUTRAL_TRESHOLD,
+  TXT_TAKE_OFF_TRESHOLD,
+  TXT_TAKE_OFF_TIME,
+  TXT_MLK_FLW_CALC_TIME,
+  TXT_CLUSTER_DLY,
+  TXT_VACUUM_DLY,                                  // 30
+  TXT_OUTPUT_P1_DLY,
+  TXT_OUTPUT_P1_TIME,
+  TXT_OUTPUT_P1_INV,
+  TXT_KICK_OFF_FLOW_PROC,
+  TXT_KICK_OFF_SAMPLE_TIME,
+  TXT_KICK_OFF_FAC_TRESHOLD,
+  TXT_SEND_TIME,
+  TXT_CLEAN_START_TIME,
+  TXT_CLEAN_TIME,
+  TXT_VALVE_TIME,                                  // 40
+//  TXT_VALVE_TIME1,
+//  TXT_VALVE_TIME2,
+//  TXT_VALVE_TIME3,
+//  TXT_VALVE_TIME4,
+//  TXT_VALVE_TIME5,
+//  TXT_VALVE_TIME6,
+//  TXT_VALVE_TIME7,
+//  TXT_VALVE_TIME8,
+//  TXT_VALVE_TIME9,
+//  TXT_VALVE_TIME10,
+//  TXT_VALVE_TIME11,
+//  TXT_VALVE_TIME12,
+//  TXT_VALVE_TIME13,
+  TXT_COR_FLOW0,
+  TXT_COR_FLOW1,
+  TXT_COR_FLOW2,
+  TXT_COR_FLOW3,
+  TXT_COR_FLOW4,
+  TXT_COR_FLOW5,
+  TXT_COR_FLOW6,
+  TXT_COR_FLOW7,
+  TXT_COR_FLOW8,
+  TXT_COR_FLOW9,                                   // 50
+  TXT_COR_FLOW10,
+  TXT_COR_FLOW11,
+  TXT_COR_FLOW12,
+  TXT_COR_FLOW13,
+  TXT_VALVE_TIME_MAN,
+  TXT_COR_FLOW0_MAN,
+  TXT_COR_FLOW1_MAN,
+  TXT_COR_FLOW2_MAN,
+  TXT_COR_FLOW3_MAN,
+  TXT_COR_FLOW4_MAN,                               // 60
+  TXT_COR_FLOW5_MAN,
+  TXT_COR_FLOW6_MAN,
+  TXT_COR_FLOW7_MAN,
+  TXT_COR_FLOW8_MAN,
+  TXT_COR_FLOW9_MAN,
+  TXT_COR_FLOW10_MAN,
+  TXT_COR_FLOW11_MAN,
+  TXT_COR_FLOW12_MAN,
+  TXT_COR_FLOW13_MAN,
+  TXT_FILL_TIME,                                   // 70
+  TXT_EMPTY_TIME,
+  TXT_CLN_PHS1,
+  TXT_CLN_PHS2,
+  TXT_CLN_PHS4,
+  TXT_SERIAL_NR,
+  TXT_LEVEL_COUNTER,
+  TXT_CON_MEASURING,
+  TXT_TEMP_MEASURING,
+  TXT_RTEMP,
+  TXT_ACT_MEASURING,                               // 80
+  TXT_FEEDING,
+  TXT_RELAIS_TIME,
+  TXT_GOAT_MILK_GLASS,
+  TXT_MM_GOAT_VAL1,
+  TXT_MM_GOAT_VAL2,
+  TXT_ROBOT,
+  TXT_PULSATION,
+  TXT_PULS_FREQ,
+  TXT_PULS_RATIO,
+  TXT_STIM_PULS_FREQ,                              // 90
+  TXT_STIM_PULS_RATIO,
+  TXT_STIM_TRESHOLD,
+  TXT_STIM_START_TIME,
+  TXT_STIM_MAX_TIME,
+  TXT_NR_OF_PULSATORS,
+  TXT_OPEN_TANDEM,
+  TXT_TEST,
+  TXT_DEFAULT,
+  TXT_R35,
+  TXT_R40,                                         // 100
+  TXT_CLEAR_KEY,
+  TXT_ENTER_KEY,
+  TXT_WASH_KEY,
+  TXT_DECEAS_KEY,
+  TXT_COW_KEY,
+  TXT_FEED_KEY,
+  TXT_MILK_KEY,
+  TXT_SHIFT_KEY,
+  TXT_CENTRL_KEY,
+  TXT_EXIT_KEY,                                    // 110
+  TXT_ENTRAN_KEY,
+  TXT_STOP_KEY,
+  TXT_ACT_MILK_KEY,
+  TXT_MANUAL_KEY,
+  TXT_CLUSTR_KEY,
+  TXT_AUTO_KEY,
+  TXT_CALEND_KEY,
+  TXT_I1_CONFIG,
+  TXT_I2_CONFIG,
+  TXT_U35,
+  TXT_U40,                                         // 120
+  TXT_OUTP_K2,
+  TXT_FLW_LVL2_THRSH,
+  TXT_END_TEST,
+  TXT_PARLOUR_TYPE,
+  TXT_OUTPUT_BLOCK_BITS,
+  TXT_GATE_K3,
+  TXT_GATE_K4,
+  TXT_GATE_K5,
+  TXT_CORR,
+  TXT_KG_15,                                       // 130
+  TXT_KG_05,
+  TXT_KG_00,  TXT_CAL1,
+  TXT_CAL2,
+  TXT_CAL_READY,
+  TXT_SOFT_KEY,
+  TXT_CLN_START_ADDR,
+  TXT_OT_ROW_MASTER,
+  TXT_MLK_SWP_DLY_TM,
+  TXT_MLK_SWP_ACT_TM,                               // 140
+  TXT_NR_OF_STANDS,
+  TXT_CM_ERROR,
+  TXT_EXT_CON_MEASURING,
+  TXT_CLUSTER_DOWN,
+  TXT_FEED_SPEED,
+  TXT_FEED_PORTION,
+  TXT_FEED_BALANCE_DEF,                             // 147
+  TXT_SB_FEED_PORTION,
+  TXT_SB_FEED_BALANCE_DEF,
+  TXT_SB_RELAIS_TIME,                               // 150
+  TXT_SERVICE_MODE,
+//#if (_VERSION_25_)
+  TXT_SEP_MSG_CNTRL_BITS,
+  TXT_SEP_ACT_FUNC_NR,
+  TXT_SEP_COND_FUNC_NR,
+  TXT_SEP_MIN_YLD_FUNC_NR,
+  TXT_SEP_TMP_FUNC_NR,
+//#endif
+  TXT_PT_I1,
+  TXT_PT_I2,
+  TXT_PT_I3,
+  TXT_PT_I4,
+  TXT_PT_P1,
+  TXT_PT_P2,
+  TXT_PT_P3,
+  TXT_PT_LP,
+  TXT_PT_K1,                                        // 160
+  TXT_PT_K2,
+  TXT_PT_K3,
+  TXT_PT_K4,
+  TXT_PT_K5,
+  TXT_PT_M1,
+  TXT_PT_M2,
+  TXT_PT_M3,
+  TXT_PT_MTR,
+  TXT_TRACTION_ARM_ON_TIME,
+  TXT_TRACTION_ARM_OFF_TIME,
+  TXT_TRACTION_ARM_PLS_FREQ,
+  TXT_TRACTION_ARM_PLS_RAT,
+  TXT_GATE_K3_TIME,
+  TXT_GATE_K4_TIME,
+  TXT_GATE_K5_TIME,
+  TXT_DETECT_LEVEL,
+  TXT_CLUSTER_DOWN_DELAY_HIGH
+#if _HARTMAN_
+ ,TXT_HARTMAN_CONFIG
+#endif
+#if ( _HP_TEST_ )
+ ,TXT_BURNIN,
+  TXT_ROM_TEST,
+  TXT_RAM_TEST,
+  TXT_M_K_TEST,
+  TXT_I_K_TEST,
+  TXT_I_P_TEST,
+  TXT_MTR_TEST,
+  TXT_C_T_TEST,
+  TXT_BURNIN_2
+#endif
+};
+
+
+// TextStrings------------------------------------------------------------------
+enum {
+
+  TXT_TMP   = 0,
+  TXT_TMPT,
+  TXT_CV_RF,
+  TXT_CV_RR,
+  TXT_CV_LR,
+  TXT_CV_LF,
+  TXT_CON,
+  TXT_ACV_RF,
+  TXT_ACV_RR,
+  TXT_ACV_LR,
+  TXT_ACV_LF,
+  TXT_ACON,
+  TXT_IC_RF,
+  TXT_IC_RR,
+  TXT_IC_LR,
+  TXT_IC_LF,
+  TXT_IC_ALL,
+  TXT_IC_TRT,
+  TXT_FEED_EXTRA,                         // feed-info
+  TXT_FEED_MILK,
+  TXT_FEED_TOTAL,
+  TXT_FEED_BALANCE,
+  TXT_FEED_CAL,
+  TXT_MILK_EXPECT,
+  TXT_MILK_SEP,
+  TXT_ACT_MILK_SPEED,
+  TXT_MAX_MILK_SPEED,
+  TXT_AVE_MILK_SPEED,
+  TXT_MILK_TIME,
+  TXT_COLOST,
+  TXT_COW,
+  TXT_ACT,
+  TXT_RESP,
+  TXT_GROUP,
+  TXT_SEP_NR,
+  TXT_LACT,
+  TXT_HEAT,
+  TXT_INSEM,
+  TXT_INCALF,
+  TXT_DRY,
+  TXT_CONN_ATT,
+  TXT_CONN_PATT,
+  TXT_ILL_ATT,
+  TXT_CALIBRATE,
+  TXT_COM_FAIL,
+  TXT_YES,
+  TXT_NO,
+  TXT_MTR_ERR,
+  TXT_OUT_ERR,
+  TXT_ARV,
+  TXT_ARV_RF,
+  TXT_ARV_RR,
+  TXT_ARV_LR,
+  TXT_ARV_LF,
+  TXT_MILK_MANUAL_SET,
+  TXT_TEMP_ATT
+};
+
+#pragma memory=constseg(CONSTPAGE)
+
+#if ( _HP_TEST_ )
+#if _HARTMAN_
+    extern const unsigned char SrvTxtString[194][11];         // 201
+#else
+    extern const unsigned char SrvTxtString[193][11];         // 201
+#endif
+#else
+#if _HARTMAN_
+    extern const unsigned char SrvTxtString[185][11];         // 192
+#else
+    extern const unsigned char SrvTxtString[184][11];         // 192
+#endif
+#endif
+
+extern const unsigned char TextString[7][56][11];
+extern const unsigned char MsgStrings[18][11];
+
+#pragma memory=default

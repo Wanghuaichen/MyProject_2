@@ -1,0 +1,25 @@
+awk '
+FILENAME ~ /^test_nums.h$/ {
+ if ($0 ~ /^#define/) {
+  tn[$2] = $7+0;
+ }
+ next;
+}
+FILENAME ~ /^msg_nums.h$/ {
+ if ($0 ~ /REF|RES/) {
+  tn[$2] = $7+0;
+ }
+ next;
+}
+
+$2 ~ /^M$/ {
+ num = $4+0;
+ n = split($3,a,"|");
+ for (c=0;c<=n;c++) {
+  num += tn[a[c]];
+ }
+ $1 = $1 "Id";
+ printf("%-35s %6d      0x%4X\n", $1, num, num);
+}
+
+' test_nums.h msg_nums.h test_mpc1_flow.m > flow_nums

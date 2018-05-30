@@ -1,0 +1,98 @@
+cat test_data.d |
+
+nawk -v filename=`basename $1` '
+
+BEGIN {
+ q = index (filename,"."); filename = substr (filename,1,q-1);
+
+ type ["U1="] = "U1" ; type ["S1="] = "S1"  ; type ["U1K"] = "U1K" ; type ["S1K"] = "S1K" ;
+ type ["U2="] = "U2" ; type ["S2="] = "S2"  ; type ["U2K"] = "U2K" ; type ["S2K"] = "S2K" ;
+ type ["U4="] = "U4" ; type ["S4="] = "S4"  ; type ["U4K"] = "U4K" ; type ["S4K"] = "S4K" ;
+ type ["D=="] = "DT" ; type ["D=K"] = "DTK" ; type ["T=="] = "TM"  ; type ["T=K"] = "TMK" ;
+ type ["B=="] = "BL" ; type ["B=K"] = "BLK" ;
+ type ["X=="] = "XX" ; type ["X=K"] = "XXK" ;
+ type ["A=="] = "AT" ; type ["A=K"] = "ATK" ;
+ offs ["U1"] = 1; offs ["U2"] = 2; offs ["U4"] = 4;
+ offs ["S1"] = 1; offs ["S2"] = 2; offs ["S4"] = 4;
+ offs ["DT"] = 2; offs ["TM"] = 2; offs ["BL"] = 1;
+ offs ["AT"] = 4; offs ["XX"] = 1;
+ first = 1;
+ printf ("\n#ifndef %s\n\n",filename);
+ printf ("#define %s 1\n\n",filename);
+
+
+ printf ("#include \"../flowlib/test_nums.h\"\n");
+ printf ("#include \"../flowlib/dbmstype.h\"\n");
+}
+
+function checkoffset()
+{
+ if (offset % 2 != 0) {
+  if (index(itemtype[$1],"1") == 0 && index(itemtype[$1],"B") == 0 && index(itemtype[$1],"X") == 0) {
+   printf ("##### ERROR OFFSET #####\n");
+  }
+ }
+}
+
+FILENAME ~ /^-/ {
+ if ($2 ~ /^[SUDTBAX]/) {
+  itemtype [$1] = type[$2$3"="];
+ }
+ next;
+}
+
+/^\// {next;}
+
+$2 ~ /^M/ {
+ if (!first) {
+  if (!nr) {printf ("\tS2 Empty;\n"); }
+  checkoffset();
+  if (struct) {
+   printf ("\t} %s[1];\n",structname);
+  }
+  printf ("} %s;\n\n",flowname);
+ }
+ first = 0;
+ struct = 0;
+ nr = 0;
+ offset = 0;
+ flowname = $1;
+ FLOW[flowname] = $3;
+ FLOWNR[flowname] = $4;
+ printf ("#define %sId (%s + %d)\n",flowname,FLOW[flowname],FLOWNR[flowname]);
+ printf ("\ntypedef struct _%s {\n",flowname);
+ next;
+}
+
+$2 ~ /^S/ {
+ struct = 1;
+ structname = $1;
+ printf ("\tstruct {\n");
+ next;
+}
+
+{
+ if (length ($1) == 0) {next;}
+ if (length (itemtype[$1]) == 0) {
+  printf ("##### ERROR ITEM NOT FOUND %s in : %s #####\n",$1,flowname);
+ } else {
+  nr++;
+  if (struct) {printf ("\t"); }
+  printf ("\t%s %s;\n",itemtype[$1],$1);
+ }
+ checkoffset();
+ offset += offs [itemtype[$1]]
+}
+
+END {
+ if (!first) {
+  if (!nr) {printf ("\tS2 Empty;\n"); }
+  checkoffset();
+  if (struct) {
+   printf ("\t} %s[1];\n",structname);
+  }
+  printf ("} %s;\n",flowname);
+ }
+ printf ("\n#endif\n");
+}
+' - $1
