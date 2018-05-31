@@ -20,6 +20,17 @@
 
 #define HP_UART_TEST 0x40  
 //#define HP_START_TEST 0x60  
+
+/* New definitions: 2-bytes commands from the HP Tester */
+// I2C Command Test: Request firmware version from PIC-A
+#define HP_REQUEST_PICA_VERSION						0x241A
+// I2C Command Test: Request firmware version from PIC-B
+#define HP_REQUEST_PICB_VERSION						0x241B
+// I2C Command Test: Request firmware version from Conductivity Controller via PIC-A
+#define HP_REQUEST_CONDUCTIVITY_VERSION				0x241C
+#define HP_DISPLAY_TEST								0x2500
+#define HP_LED
+
  
 
 
