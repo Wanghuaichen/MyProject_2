@@ -28,10 +28,47 @@
 #define HP_REQUEST_PICB_VERSION						0x241B
 // I2C Command Test: Request firmware version from Conductivity Controller via PIC-A
 #define HP_REQUEST_CONDUCTIVITY_VERSION				0x241C
-#define HP_DISPLAY_TEST								0x2500
-#define HP_LED
+#define HP_DISPLAY_TEST								0x2501
+#define HP_LED_TEST									0x2502
+#define HP_LAMP_TEST 								0x2503
+// Keyboard Test for 27 buttons
+#define HP_KEY_COW_TEST								0x2601
+#define HP_KEY_FEED_TEST								0x260
+#define HP_KEY_MILK_TEST								0x260
+#define HP_KEY_DECEAS_TEST								0x260
+#define HP_KEY_CALEND_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
 
- 
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+#define HP_KEY_TEST								0x260
+
+
+
+// 68HC11 MCU Response Code
+#define TEST_PASSED					0xFF50		//Actual Test Succeeded
+#define TEST_FAILED					0xFF51		//Actual Test Failed
+#define TEST_ERROR					0xFF52		//General Error
+#define COMMAND_INVALID				0xFF53
+#define NO_PICA_COMMUNICATION		0xFF54
+#define NO_PICB_COMMUNICATION		0xFF55
 
 
 // function prototypes ---------------------------------------------------------
