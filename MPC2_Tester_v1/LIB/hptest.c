@@ -246,7 +246,8 @@ non_banked void HpTest (void)
 
     HpTestCommand = GetHpTestCommand(); 
   
-    switch( HpTestCommand ) {
+    switch( HpTestCommand )
+    {
       case HP_ROM_TEST:
 //           Result = FTChecksumRom(0);
            Result = 0;
@@ -316,18 +317,255 @@ non_banked void HpTest (void)
            if ( CONFIG & NOCOP ) Send( 0xFF51 );
            else                  Send( 0xFF50 ); 
         break;
+//      default:
+//           if ( HpTestCommand > 0x2100 && HpTestCommand < 0x212f ){
+//             if ( HandleWriteIic(PICA_ADDRESS, IIC_WRITE_PORTB,   1, (unsigned char *)((unsigned char *)(&HpTestCommand)+1)) ){
+//               Send ( 0xff51 );
+//             } else {
+//               Send ( 0xff50 );
+//             }
+//           }
+//        break;
+      case HP_REQUEST_PICA_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_CONDUCTIVITY_VERSION:
+
+    	  break;
+      case HP_DISPLAY_TEST:
+
+    	  break;
+      case HP_LED_TEST:
+
+    	  break;
+      case HP_LAMP_TEST:
+
+    	  break;
+      case HP_KEY_COW_TEST:
+
+    	  break;
+      case HP_KEY_FEED_TEST:
+
+    	  break;
+      case HP_KEY_MILK_TEST:
+
+    	  break;
+      case HP_KEY_DECEAS_TEST:
+
+    	  break;
+      case HP_KEY_CALEND_TEST:
+
+    	  break;
+      case HP_KEY_SHIFT_TEST:
+
+    	  break;
+      case HP_KEY_1_TEST:
+
+    	  break;
+      case HP_KEY_2_TEST:
+
+    	  break;
+      case HP_KEY_3_TEST:
+
+    	  break;
+      case HP_KEY_4_TEST:
+
+    	  break;
+      case HP_KEY_5_TEST:
+
+    	  break;
+      case HP_KEY_6_TEST:
+
+    	  break;
+      case HP_KEY_7_TEST:
+
+    	  break;
+      case HP_KEY_8_TEST:
+
+    	  break;
+      case HP_KEY_9_TEST:
+
+    	  break;
+      case HP_KEY_CLEAR_TEST:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICA_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICA_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
+      case HP_REQUEST_PICB_VERSION:
+
+    	  break;
       default:
-           if ( HpTestCommand > 0x2100 && HpTestCommand < 0x212f ){
-             if ( HandleWriteIic(PICA_ADDRESS, IIC_WRITE_PORTB,   1, (unsigned char *)((unsigned char *)(&HpTestCommand)+1)) ){
-               Send ( 0xff51 );
-             } else {
-               Send ( 0xff50 );
-             }
-           }
-        break;   
-    }
-  }
-}
+
+    	  break;
+    } // switch( HpTestCommand )
+  } // while(1)
+} // void HpTest (void)
 
   
 #endif 
