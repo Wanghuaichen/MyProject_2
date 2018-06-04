@@ -167,7 +167,21 @@ non_banked void PrintTestProg(void)
   HandleWriteIic(KB_ADDRESS, IIC_DISPLAY_TEXT, 10, Text); WatchDog();
 }
 
+non_banked void DisplayAll(void)
+{
+	disp_point = 0x3fff;
+	memory_set( DispTable, ' ', 10 );
+	HandleWriteIic(KB_ADDRESS, IIC_WRITE_POINT_INFO, 2, (unsigned char *)&disp_point );
+	HandleWriteIic(KB_ADDRESS, IIC_DISPLAY_TEXT, 10, DispTable);
+}
 
+non_banked void DisplayClear(void)
+{
+	disp_point = 0;
+	memory_clear( DispTable, 10 ) ;
+	HandleWriteIic(KB_ADDRESS, IIC_WRITE_POINT_INFO, 2, (unsigned char *)&disp_point );
+	HandleWriteIic(KB_ADDRESS, IIC_DISPLAY_TEXT, 10, DispTable);
+}
 
 
 // =============================================================================
@@ -327,237 +341,180 @@ non_banked void HpTest (void)
 //           }
 //        break;
       case HP_REQUEST_PICA_VERSION:
-
+    	  Result = 0;
+    	  Result = (unsigned short) IC08PrgVrs;
+    	  Send(Result);
     	  break;
       case HP_REQUEST_PICB_VERSION:
-
+    	  Result = 0;
+    	  Result = (unsigned short) IC13PrgVrs;
+    	  Send(Result);
     	  break;
       case HP_REQUEST_CONDUCTIVITY_VERSION:
-
+    	  Result = 0;
+    	  Result = (unsigned short) IC09PrgVrs;
+    	  Send(Result);
     	  break;
-      case HP_DISPLAY_TEST:
-
+      case HP_DISPLAY_TEST_OFF:
+    	  DisplayClear();
+          Send(TEST_PASSED);
     	  break;
-      case HP_LED_TEST:
-
+      case HP_DISPLAY_TEST_ON:
+    	  DisplayAll();
+          Send(TEST_PASSED);
     	  break;
-      case HP_LAMP_TEST:
-
+      case HP_LED_TEST_OFF:
+    	  DispLeds = 0x00;
+    	  stat = HandleWriteIic(KB_ADDRESS, IIC_WRITE_LED_INFO, 1, (unsigned char *)&DispLeds );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
+    	  break;
+      case HP_LED_TEST_ON:
+    	  DispLeds = 0xFF;
+    	  stat = HandleWriteIic(KB_ADDRESS, IIC_WRITE_LED_INFO, 1, (unsigned char *)&DispLeds );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
+    	  break;
+      case HP_LAMP_TEST_OFF:
+          LampControl(LAMP_OFF, 0);
+//        PORTD &= (0xFF - 0x20);		// PD5 (68HC11) ---> LAMP
+          Send(TEST_PASSED);
+    	  break;
+      case HP_LAMP_TEST_ON:
+    	  LampControl(LAMP_ON, 0);
+//    	  PORTD |= 0x20;		// PD5 (68HC11) ---> LAMP
+          Send(TEST_PASSED);
     	  break;
       case HP_KEY_COW_TEST:
-
-    	  break;
       case HP_KEY_FEED_TEST:
-
-    	  break;
       case HP_KEY_MILK_TEST:
-
-    	  break;
       case HP_KEY_DECEAS_TEST:
-
-    	  break;
       case HP_KEY_CALEND_TEST:
-
-    	  break;
       case HP_KEY_SHIFT_TEST:
-
-    	  break;
       case HP_KEY_1_TEST:
-
-    	  break;
       case HP_KEY_2_TEST:
-
-    	  break;
       case HP_KEY_3_TEST:
-
-    	  break;
       case HP_KEY_4_TEST:
-
-    	  break;
       case HP_KEY_5_TEST:
-
-    	  break;
       case HP_KEY_6_TEST:
-
-    	  break;
       case HP_KEY_7_TEST:
-
-    	  break;
       case HP_KEY_8_TEST:
-
-    	  break;
       case HP_KEY_9_TEST:
+      case HP_KEY_0_TEST:
+      case HP_KEY_ENTER_TEST:
+      case HP_KEY_ENTRAN_TEST:
+      case HP_KEY_CENTRL_TEST:
+      case HP_KEY_WATERTAP_TEST:
+      case HP_KEY_EXIT_TEST:
+      case HP_KEY_STOP_TEST:
+      case HP_KEY_MILK_V_TEST:
+      case HP_KEY_CLUSTR_TEST:
+      case HP_KEY_AUTO_TEST:
+      case HP_KEY_MANUAL_TEST:
+    	  /* The returned key code is defined as PIC-Offset + shift in KEY/key.h */
+    	  result = (unsigned short)ReadKey();
+    	  Send(result);
+    	  break;
+      case HP_READ_INPUT_M1:	// M1 ---> PA0 (68HC11)
+    	  result = ( (PORTA & K3_M1) == K3_M1 )? STATE_HIGH: STATE_LOW;
+    	  Send(result);
+    	  break;
+      case HP_READ_INPUT_M2:	// M2 ---> PA1 (68HC11)
+    	  result = ( (PORTA & K3_M2) == K3_M2 )? STATE_HIGH: STATE_LOW;
+    	  Send(result);
+    	  break;
+      case HP_READ_INPUT_M3:	// M3 ---> PA2 (68HC11)
+    	  result = ( (PORTA & K3_M3) == K3_M3 )? STATE_HIGH: STATE_LOW;
+    	  Send(result);
+    	  break;
+      case HP_READ_INPUT_I1:	// I1 ---> PE3 (68HC11)
 
     	  break;
-      case HP_KEY_CLEAR_TEST:
+      case HP_READ_INPUT_I2:	// I2 ---> PE2 (68HC11)
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_READ_INPUT_I3:	// I3 ---> PE1 (68HC11)
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_READ_INPUT_I4:	// I4 ---> PE0 (68HC11)
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_READ_INPUT_I5:	// I5 ---> RXD2 ---> RA4 (PIC-A)
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_READ_ANALOG_INPUT_VSS:
 
     	  break;
-      case HP_REQUEST_PICA_VERSION:
+      case HP_READ_ANALOG_INPUT_IMOTOR:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_OUTPUT_P1:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_OUTPUT_P2:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_OUTPUT_P3:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_OUTPUT_P1:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_OUTPUT_P2:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_OUTPUT_P3:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_RELAY_2:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_RELAY_3:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_RELAY_4:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_RELAY_5:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_RELAY_6:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_SET_RELAY_7:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_RELAY_2:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_RELAY_3:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_RELAY_4:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_RELAY_5:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_RELAY_6:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_RESET_RELAY_7:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_MOTOR_START:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_MOTOR_STOP:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_BRAKE_ENABLE:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_BRAKE_DISABLE:
 
     	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICA_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
-
-    	  break;
-      case HP_REQUEST_PICB_VERSION:
+      case HP_READ_MOTOR_HOME_FLAG:
 
     	  break;
       default:

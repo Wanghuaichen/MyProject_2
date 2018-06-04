@@ -36,11 +36,14 @@
 #define HP_REQUEST_CONDUCTIVITY_VERSION				0x241C
 
 // LED Display Segments Test via PIC-B
-#define HP_DISPLAY_TEST								0x2501
+#define HP_DISPLAY_TEST_OFF								0x2510
+#define HP_DISPLAY_TEST_ON								0x2511
 // LED Test via PIC-B for 5 indication LEDs
-#define HP_LED_TEST									0x2502
+#define HP_LED_TEST_OFF									0x2520
+#define HP_LED_TEST_ON									0x2521
 // Red Indication LAMP Test by PD5 (68HC11)
-#define HP_LAMP_TEST 								0x2503
+#define HP_LAMP_TEST_OFF 								0x2530
+#define HP_LAMP_TEST_ON									0x2531
 
 // Keyboard Test for 27 buttons via PIC-B
 #define HP_KEY_COW_TEST								0x2601
@@ -97,24 +100,24 @@
 #define HP_SET_OUTPUT_P2							0x2912		// PA4 (68HC11) ---> P2
 #define HP_SET_OUTPUT_P3							0x2913		// PA5 (68HC11) ---> P3
 // L output is on K13 connector for LAMP
-#define HP_SET_OUTPUT_L								0x2914		// PD5 (68HC11) ---> L (LAMP)
+//#define HP_SET_OUTPUT_L								0x2914		// PD5 (68HC11) ---> L (LAMP)
 // Reset digital output
 // P1 ~ P3 outputs are on K6 connector
 #define HP_RESET_OUTPUT_P1							0x2901		// PA3 (68HC11) ---> P1
 #define HP_RESET_OUTPUT_P2							0x2902		// PA4 (68HC11) ---> P2
 #define HP_RESET_OUTPUT_P3							0x2903		// PA5 (68HC11) ---> P3
 // L output is on K13 connector for LAMP
-#define HP_RESET_OUTPUT_L							0x2904		// PD5 (68HC11) ---> L (LAMP)
+//#define HP_RESET_OUTPUT_L							0x2904		// PD5 (68HC11) ---> L (LAMP)
 
 // Set Relay via PIC A
-#define HP_SET_RELAY_1								0x2111		// RB5 (PIC-A) -> RB5a -----------------> Relay 1
+//#define HP_SET_RELAY_1								0x2111		// RB5 (PIC-A) -> RB5a ---> Inverter ---> Relay 1
 #define HP_SET_RELAY_3								0x2113		// RB0 (PIC-A) -> RB0a ---> Inverter ---> Relay 3
 #define HP_SET_RELAY_4								0x2114		// RB1 (PIC-A) -> RB1a ---> Inverter ---> Relay 4
 #define HP_SET_RELAY_5								0x2115		// RB2 (PIC-A) -> RB2a ---> Inverter ---> Relay 5
 #define HP_SET_RELAY_6								0x2116		// RB3 (PIC-A) -> RB3a ---> Inverter ---> Relay 6
 #define HP_SET_RELAY_7								0x2117		// RB4 (PIC-A) -> RB4a ---> Inverter ---> Relay 7
 // Reset Relay via PIC A
-#define HP_RESET_RELAY_1							0x2101		// RB5 (PIC-A) -> RB5a -----------------> Relay 1
+//#define HP_RESET_RELAY_1							0x2101		// RB5 (PIC-A) -> RB5a ---> Inverter ---> Relay 1
 #define HP_RESET_RELAY_3							0x2103		// RB0 (PIC-A) -> RB0a ---> Inverter ---> Relay 3
 #define HP_RESET_RELAY_4							0x2104		// RB1 (PIC-A) -> RB1a ---> Inverter ---> Relay 4
 #define HP_RESET_RELAY_5							0x2105		// RB2 (PIC-A) -> RB2a ---> Inverter ---> Relay 5
@@ -128,7 +131,9 @@
 #define HP_BRAKE_DISABLE							0x22B2
 #define HP_READ_MOTOR_HOME_FLAG						0x22C0		// READ PE7 (68HC11)
 
-// 68HC11 MCU Response Code
+// 68HC11 MCU Response Code ----------------------------------------------------
+#define STATE_LOW									0x0000
+#define STATE_HIGH									0x0001
 #define TEST_PASSED									0xFF50		// Actual Test Succeeded
 #define TEST_FAILED									0xFF51		// Actual Test Failed
 #define TEST_ERROR									0xFF52		// General Error
@@ -136,6 +141,27 @@
 #define NO_PICA_COMMUNICATION						0xFF54
 #define NO_PICB_COMMUNICATION						0xFF55
 
+// 68HC11 Input Ports
+#define K3_M1   	0x01            // M1 ---> PA0 (68HC11 Port A0 input)
+#define K3_M2   	0x02            // M2 ---> PA1 (68HC11 Port A1 input)
+#define K3_M3   	0x04            // M3 ---> PA2 (68HC11 Port A2 input)
+
+#define K5_I1   	0x08            // I1 ---> PE3 (68HC11 Port E3 input)
+#define K5_I2   	0x04			// I2 ---> PE2 (68HC11 Port E2 input)
+#define K5_I3   	0x02			// I3 ---> PE1 (68HC11 Port E1 input)
+#define K5_I4		0x01			// I4 ---> PE0 (68HC11 Port E0 input)
+
+// 68HC11 Output Ports
+#define K6_P1		0x08			// PA3 (68HC11 Port A3 output) ---> P1
+#define K6_P2		0x10			// PA4 (68HC11 Port A4 output) ---> P2
+#define K6_P3		0x20			// PA5 (68HC11 Port A5 output) ---> P3
+
+// PIC-A Output Ports for Delays
+#define RY3			0x01			// PIC-A RB0 ---> Relay 3
+#define RY4			0x02			// PIC-A RB1 ---> Relay 4
+#define RY5			0x04			// PIC-A RB2 ---> Relay 5
+#define RY6			0x08			// PIC-A RB3 ---> Relay 6
+#define RY7			0x10			// PIC-A RB4 ---> Relay 7
 
 // function prototypes ---------------------------------------------------------
 
