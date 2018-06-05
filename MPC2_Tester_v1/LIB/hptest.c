@@ -23,6 +23,17 @@
 #include "../include/cstartup.h"
 #include "eehc11.h"
 #include "hptest.h"
+
+#include "../appl/takeoff.h"
+#include "../lib/convert.h"
+#include "../lib/mem.h"
+#include "../lib/adconv.h"
+#include "../lib/convert.h"
+#include "../lib/extport.h"
+#include "../motor/motor.h"
+#include "../key/keyint.h"
+#include "../key/key.h"
+#include "burnin.c"
  
 #pragma codeseg(SPECIALMODE)
 
@@ -183,6 +194,23 @@ non_banked void DisplayClear(void)
 	HandleWriteIic(KB_ADDRESS, IIC_DISPLAY_TEXT, 10, DispTable);
 }
 
+non_banked unsigned short MeasureBrakeTime(void)
+{
+	unsigned short starttime, stoptime;
+	unsigned short braketime = 0;
+
+	starttime = stoptime = Cnt10msec;
+	TurnMotorOff(0);
+	do {
+		if ( ChkMtrInputLevel(0) ){
+			stoptime = Cnt10msec;
+			break;
+		}
+	} while( !TimeControl(Cnt10msec, starttime + 150) );
+
+	braketime = stoptime > starttime ? (stoptime - starttime) : (0xFFFF - starttime + stoptime);
+	return braketime;
+}
 
 // =============================================================================
 non_banked unsigned char UartTest( void )
@@ -377,7 +405,7 @@ non_banked void HpTest (void)
     	  break;
       case HP_LAMP_TEST_OFF:
           LampControl(LAMP_OFF, 0);
-//        PORTD &= (0xFF - 0x20);		// PD5 (68HC11) ---> LAMP
+//    	  PORTD &= (0xFF - 0x20);		// PD5 (68HC11) ---> LAMP
           Send(TEST_PASSED);
     	  break;
       case HP_LAMP_TEST_ON:
@@ -412,113 +440,155 @@ non_banked void HpTest (void)
       case HP_KEY_AUTO_TEST:
       case HP_KEY_MANUAL_TEST:
     	  /* The returned key code is defined as PIC-Offset + shift in KEY/key.h */
-    	  result = (unsigned short)ReadKey();
-    	  Send(result);
+    	  Result = (unsigned short)ReadKey();
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_M1:	// M1 ---> PA0 (68HC11)
-    	  result = ( (PORTA & K3_M1) == K3_M1 )? STATE_HIGH: STATE_LOW;
-    	  Send(result);
+    	  Result = ( (PORTA & K3_M1) == K3_M1 )? STATE_HIGH: STATE_LOW;
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_M2:	// M2 ---> PA1 (68HC11)
-    	  result = ( (PORTA & K3_M2) == K3_M2 )? STATE_HIGH: STATE_LOW;
-    	  Send(result);
+    	  Result = ( (PORTA & K3_M2) == K3_M2 )? STATE_HIGH: STATE_LOW;
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_M3:	// M3 ---> PA2 (68HC11)
-    	  result = ( (PORTA & K3_M3) == K3_M3 )? STATE_HIGH: STATE_LOW;
-    	  Send(result);
+    	  Result = ( (PORTA & K3_M3) == K3_M3 )? STATE_HIGH: STATE_LOW;
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_I1:	// I1 ---> PE3 (68HC11)
-
+    	  Result = ( (PORTE & K5_I1) == K5_I1 )? STATE_HIGH: STATE_LOW;
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_I2:	// I2 ---> PE2 (68HC11)
-
+    	  Result = ( (PORTE & K5_I2) == K5_I2 )? STATE_HIGH: STATE_LOW;
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_I3:	// I3 ---> PE1 (68HC11)
-
+    	  Result = ( (PORTE & K5_I3) == K5_I3 )? STATE_HIGH: STATE_LOW;
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_I4:	// I4 ---> PE0 (68HC11)
-
+    	  Result = ( (PORTE & K5_I4) == K5_I4 )? STATE_HIGH: STATE_LOW;
+    	  Send(Result);
     	  break;
       case HP_READ_INPUT_I5:	// I5 ---> RXD2 ---> RA4 (PIC-A)
-
+    	  // Need further investigation over how to read I5
+          Send(TEST_PASSED);
     	  break;
-      case HP_READ_ANALOG_INPUT_VSS:
-
+      case HP_READ_ANALOG_INPUT_VSS:	// VSS ---> Current Sensing Circuit ---> PE4/AN4 (68HC11)
+    	  Result = (unsigned short)ADConv1Of8( CHANNEL5 );
+    	  Send(Result);
     	  break;
-      case HP_READ_ANALOG_INPUT_IMOTOR:
-
+      case HP_READ_ANALOG_INPUT_IMOTOR:		// Imotor -----------------------------> PE6/AN6 (68HC11)
+    	  Result = (unsigned short)ADConv1Of8( MOTOR_CURRENT_CHANNEL );
+    	  Send(Result);
     	  break;
-      case HP_SET_OUTPUT_P1:
-
+      case HP_SET_OUTPUT_P1:	// PA3 (68HC11) ---> P1
+    	  PortP1On();
+//    	  PORTA |= K6_P1;
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_OUTPUT_P2:
-
+      case HP_SET_OUTPUT_P2:	// PA4 (68HC11) ---> P2
+    	  PortP2On();
+//    	  PORTA |= K6_P2;
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_OUTPUT_P3:
-
+      case HP_SET_OUTPUT_P3:	// PA5 (68HC11) ---> P3
+    	  PortP3On();
+//    	  PORTA |= K6_P3;
+          Send(TEST_PASSED);
     	  break;
-      case HP_RESET_OUTPUT_P1:
-
+      case HP_RESET_OUTPUT_P1:		// PA3 (68HC11) ---> P1
+    	  PortP1Off();
+//    	  PORTA &= (0xFF - K6_P1);
+          Send(TEST_PASSED);
     	  break;
-      case HP_RESET_OUTPUT_P2:
-
+      case HP_RESET_OUTPUT_P2:		// PA4 (68HC11) ---> P2
+    	  PortP2Off();
+//    	  PORTA &= (0xFF - K6_P2);
+          Send(TEST_PASSED);
     	  break;
-      case HP_RESET_OUTPUT_P3:
-
+      case HP_RESET_OUTPUT_P3:		// PA5 (68HC11) ---> P3
+    	  PortP3Off();
+//    	  PORTA &= (0xFF - K6_P3);
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_RELAY_2:
-
+      case HP_SET_RELAY_3:		// PIC-A RB0 ---> Relay 3
+    	  ExtPortCopy |= RY3;
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_RELAY_3:
-
+      case HP_SET_RELAY_4:		// PIC-A RB1 ---> Relay 4
+    	  ExtPortCopy |= RY4;
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_RELAY_4:
-
+      case HP_SET_RELAY_5:		// PIC-A RB2 ---> Relay 5
+    	  ExtPortCopy |= RY5;
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_RELAY_5:
-
+      case HP_SET_RELAY_6:		// PIC-A RB3 ---> Relay 6
+    	  ExtPortCopy |= RY6;
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_RELAY_6:
-
+      case HP_SET_RELAY_7:		// PIC-A RB4 ---> Relay 7
+    	  ExtPortCopy |= RY7;
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_SET_RELAY_7:
-
+      case HP_RESET_RELAY_3:	// PIC-A RB0 ---> Relay 3
+    	  ExtPortCopy &= (0xFF - RY3);
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_RESET_RELAY_2:
-
+      case HP_RESET_RELAY_4:	// PIC-A RB1 ---> Relay 4
+    	  ExtPortCopy &= (0xFF - RY4);
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_RESET_RELAY_3:
-
+      case HP_RESET_RELAY_5:	// PIC-A RB2 ---> Relay 5
+    	  ExtPortCopy &= (0xFF - RY5);
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_RESET_RELAY_4:
-
+      case HP_RESET_RELAY_6:	// PIC-A RB3 ---> Relay 6
+    	  ExtPortCopy &= (0xFF - RY6);
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
-      case HP_RESET_RELAY_5:
-
-    	  break;
-      case HP_RESET_RELAY_6:
-
-    	  break;
-      case HP_RESET_RELAY_7:
-
+      case HP_RESET_RELAY_7:	// PIC-A RB4 ---> Relay 7
+    	  ExtPortCopy &= (0xFF - RY7);
+    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          Send(TEST_PASSED);
     	  break;
       case HP_MOTOR_START:
-
+    	  TurnMotorOn(0);
+          Send(TEST_PASSED);
     	  break;
       case HP_MOTOR_STOP:
-
+    	  TurnMotorOff(0);
+          Send(TEST_PASSED);
     	  break;
       case HP_BRAKE_ENABLE:
-
+    	  stat = MotorBreakOnOff(1);
+          Send(TEST_PASSED);
     	  break;
       case HP_BRAKE_DISABLE:
-
+    	  stat = MotorBreakOnOff(0);
+          Send(TEST_PASSED);
     	  break;
-      case HP_READ_MOTOR_HOME_FLAG:
-
+      case HP_READ_MOTOR_LEVEL:
+    	  Result = (unsigned short)ADConv1Of8( MOTOR_INPUT_CHANNEL );
+    	  Send(Result);
+    	  break;
+      case HP_MEASURE_MOTOR_BRAKE_TIME:
+    	  Result = MeasureBrakeTime();
+    	  Send(Result);
     	  break;
       default:
-
+    	  Send(COMMAND_INVALID);
     	  break;
     } // switch( HpTestCommand )
   } // while(1)

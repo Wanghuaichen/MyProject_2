@@ -1,9 +1,6 @@
 #ifndef TESTPROG_INCLUDED
 #define TESTPROG_INCLUDED 1
 
-// Define HP test or not
-#define _HP_TEST_	1
-
 #define HP_ROM_TEST      0x1F10
 #define HP_RAM_TEST      0x1F11
 #define HP_EEPROM_TEST   0x1F12
@@ -129,7 +126,8 @@
 #define	HP_MOTOR_STOP								0x22A2
 #define HP_BRAKE_ENABLE								0x22B1
 #define HP_BRAKE_DISABLE							0x22B2
-#define HP_READ_MOTOR_HOME_FLAG						0x22C0		// READ PE7 (68HC11)
+#define HP_READ_MOTOR_LEVEL							0x22C0		// READ PE7 (68HC11)
+#define HP_MEASURE_MOTOR_BRAKE_TIME					0x22D0
 
 // 68HC11 MCU Response Code ----------------------------------------------------
 #define STATE_LOW									0x0000
