@@ -329,7 +329,7 @@ non_banked void HpTest (void)
                if ( (cv[1] >= 83) && (cv[1] <= 95 )) {
                  // ref '35' ok, store -----------------------------------------
                  WriteEEpromByte( cv[1], &EE_U1 ); 
-                 if ( EE_U1 == cv[1] ) Send( 0xff53 ); 
+                 if ( EE_U1 == cv[1] ) Send( 0xff50 );
                  else                  Send( 0xff52 );
                } else                  Send( 0xFF52 ); 
              } else                    Send( 0xFF52 );
@@ -343,7 +343,7 @@ non_banked void HpTest (void)
                if ( (cv[1] >= 148) && (cv[1] <= 164 )) {
                  // ref '40' ok, store -----------------------------------------
                  WriteEEpromByte( cv[1], &EE_U2 ); 
-                 if ( EE_U2 == cv[1] ) Send( 0xff54 ); 
+                 if ( EE_U2 == cv[1] ) Send( 0xff50 ); 
                  else                  Send( 0xff52 );
                } else                  Send( 0xFF52 ); 
              } else                    Send( 0xFF52 );
@@ -413,32 +413,33 @@ non_banked void HpTest (void)
 //    	  PORTD |= 0x20;		// PD5 (68HC11) ---> LAMP
           Send(TEST_PASSED);
     	  break;
-      case HP_KEY_COW_TEST:
-      case HP_KEY_FEED_TEST:
-      case HP_KEY_MILK_TEST:
-      case HP_KEY_DECEAS_TEST:
-      case HP_KEY_CALEND_TEST:
-      case HP_KEY_SHIFT_TEST:
-      case HP_KEY_1_TEST:
-      case HP_KEY_2_TEST:
-      case HP_KEY_3_TEST:
-      case HP_KEY_4_TEST:
-      case HP_KEY_5_TEST:
-      case HP_KEY_6_TEST:
-      case HP_KEY_7_TEST:
-      case HP_KEY_8_TEST:
-      case HP_KEY_9_TEST:
-      case HP_KEY_0_TEST:
-      case HP_KEY_ENTER_TEST:
-      case HP_KEY_ENTRAN_TEST:
-      case HP_KEY_CENTRL_TEST:
-      case HP_KEY_WATERTAP_TEST:
-      case HP_KEY_EXIT_TEST:
-      case HP_KEY_STOP_TEST:
-      case HP_KEY_MILK_V_TEST:
-      case HP_KEY_CLUSTR_TEST:
-      case HP_KEY_AUTO_TEST:
-      case HP_KEY_MANUAL_TEST:
+//      case HP_KEY_COW_TEST:
+//      case HP_KEY_FEED_TEST:
+//      case HP_KEY_MILK_TEST:
+//      case HP_KEY_DECEAS_TEST:
+//      case HP_KEY_CALEND_TEST:
+//      case HP_KEY_SHIFT_TEST:
+//      case HP_KEY_1_TEST:
+//      case HP_KEY_2_TEST:
+//      case HP_KEY_3_TEST:
+//      case HP_KEY_4_TEST:
+//      case HP_KEY_5_TEST:
+//      case HP_KEY_6_TEST:
+//      case HP_KEY_7_TEST:
+//      case HP_KEY_8_TEST:
+//      case HP_KEY_9_TEST:
+//      case HP_KEY_0_TEST:
+//      case HP_KEY_ENTER_TEST:
+//      case HP_KEY_ENTRAN_TEST:
+//      case HP_KEY_CENTRL_TEST:
+//      case HP_KEY_WATERTAP_TEST:
+//      case HP_KEY_EXIT_TEST:
+//      case HP_KEY_STOP_TEST:
+//      case HP_KEY_MILK_V_TEST:
+//      case HP_KEY_CLUSTR_TEST:
+//      case HP_KEY_AUTO_TEST:
+//      case HP_KEY_MANUAL_TEST:
+      case HP_READ_KEY:
     	  /* The returned key code is defined as PIC-Offset + shift in KEY/key.h */
     	  Result = (unsigned short)ReadKey();
     	  Send(Result);
@@ -515,53 +516,63 @@ non_banked void HpTest (void)
     	  break;
       case HP_SET_RELAY_3:		// PIC-A RB0 ---> Relay 3
     	  ExtPortCopy |= RY3;
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_4:		// PIC-A RB1 ---> Relay 4
     	  ExtPortCopy |= RY4;
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_5:		// PIC-A RB2 ---> Relay 5
     	  ExtPortCopy |= RY5;
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_6:		// PIC-A RB3 ---> Relay 6
     	  ExtPortCopy |= RY6;
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_7:		// PIC-A RB4 ---> Relay 7
     	  ExtPortCopy |= RY7;
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_3:	// PIC-A RB0 ---> Relay 3
     	  ExtPortCopy &= (0xFF - RY3);
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_4:	// PIC-A RB1 ---> Relay 4
     	  ExtPortCopy &= (0xFF - RY4);
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_5:	// PIC-A RB2 ---> Relay 5
     	  ExtPortCopy &= (0xFF - RY5);
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_6:	// PIC-A RB3 ---> Relay 6
     	  ExtPortCopy &= (0xFF - RY6);
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_7:	// PIC-A RB4 ---> Relay 7
     	  ExtPortCopy &= (0xFF - RY7);
-    	  HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
-          Send(TEST_PASSED);
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+          if ( stat ) Send( TEST_FAILED );
+          else 		  Send( TEST_PASSED );
     	  break;
       case HP_MOTOR_START:
     	  TurnMotorOn(0);

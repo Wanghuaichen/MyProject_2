@@ -1,27 +1,27 @@
 #ifndef TESTPROG_INCLUDED
 #define TESTPROG_INCLUDED 1
 
-#define HP_ROM_TEST      0x1F10
-#define HP_RAM_TEST      0x1F11
-#define HP_EEPROM_TEST   0x1F12
+#define HP_ROM_TEST      	0x1F10
+#define HP_RAM_TEST      	0x1F11
+#define HP_EEPROM_TEST   	0x1F12
 // Conductivity Test
-#define HP_COND__LV_TEST 0x1F30
-#define HP_COND__LA_TEST 0x1F31
-#define HP_COND__RA_TEST 0x1F32
-#define HP_COND__RV_TEST 0x1F33
+#define HP_COND__LV_TEST 	0x1F30
+#define HP_COND__LA_TEST	0x1F31
+#define HP_COND__RA_TEST 	0x1F32
+#define HP_COND__RV_TEST 	0x1F33
 // Temperature Test
-#define HP_TEMP_TEST     0x1F40
-#define HP_TEMP_REF1     0x1F41
-#define HP_TEMP_REF2     0x1F42
-#define HP_RTN_REF1      0x1F43
-#define HP_RTN_REF2      0x1F44
-#define HP_CURR_TEST     0x1F50
+#define HP_TEMP_TEST     	0x1F40
+#define HP_TEMP_REF1     	0x1F41
+#define HP_TEMP_REF2     	0x1F42
+#define HP_RTN_REF1      	0x1F43
+#define HP_RTN_REF2      	0x1F44
+//#define HP_CURR_TEST     	0x1F50
 // Watchdog Test
-#define HP_WD_TEST       0x1F60
-//#define HP_RELAIS_0_TEST 0x2100       // default
+#define HP_WD_TEST       	0x1F60
+//#define HP_RELAIS_0_TEST 	0x2100       // default
 
-#define HP_UART_TEST 0x40  
-//#define HP_START_TEST 0x60  
+//#define HP_UART_TEST 		0x40
+//#define HP_START_TEST 	0x60
 
 /*** New definitions: 2-bytes commands from the HP Tester ***/
 
@@ -33,43 +33,44 @@
 #define HP_REQUEST_CONDUCTIVITY_VERSION				0x241C
 
 // LED Display Segments Test via PIC-B
-#define HP_DISPLAY_TEST_OFF								0x2510
-#define HP_DISPLAY_TEST_ON								0x2511
+#define HP_DISPLAY_TEST_OFF							0x2510
+#define HP_DISPLAY_TEST_ON							0x2511
 // LED Test via PIC-B for 5 indication LEDs
-#define HP_LED_TEST_OFF									0x2520
-#define HP_LED_TEST_ON									0x2521
+#define HP_LED_TEST_OFF								0x2520
+#define HP_LED_TEST_ON								0x2521
 // Red Indication LAMP Test by PD5 (68HC11)
-#define HP_LAMP_TEST_OFF 								0x2530
-#define HP_LAMP_TEST_ON									0x2531
+#define HP_LAMP_TEST_OFF 							0x2530
+#define HP_LAMP_TEST_ON								0x2531
 
 // Keyboard Test for 27 buttons via PIC-B
-#define HP_KEY_COW_TEST								0x2601
-#define HP_KEY_FEED_TEST							0x2602
-#define HP_KEY_MILK_TEST							0x2603
-#define HP_KEY_DECEAS_TEST							0x2604
-#define HP_KEY_CALEND_TEST							0x2605
-#define HP_KEY_SHIFT_TEST							0x2606
-#define HP_KEY_1_TEST								0x2607
-#define HP_KEY_2_TEST								0x2608
-#define HP_KEY_3_TEST								0x2609
-#define HP_KEY_4_TEST								0x260A
-#define HP_KEY_5_TEST								0x260B
-#define HP_KEY_6_TEST								0x260C
-#define HP_KEY_7_TEST								0x260D
-#define HP_KEY_8_TEST								0x260E
-#define HP_KEY_9_TEST								0x260F
-#define HP_KEY_CLEAR_TEST							0x2610
-#define HP_KEY_0_TEST								0x2611
-#define HP_KEY_ENTER_TEST							0x2612		// Lamp is enabled while key E is pressed
-#define HP_KEY_ENTRAN_TEST							0x2613
-#define HP_KEY_CENTRL_TEST							0x2614
-#define HP_KEY_WATERTAP_TEST						0x2615		// Water Tap Symbol
-#define HP_KEY_EXIT_TEST							0x2616
-#define HP_KEY_STOP_TEST							0x2617
-#define HP_KEY_MILK_V_TEST							0x2618
-#define HP_KEY_CLUSTR_TEST							0x2619
-#define HP_KEY_AUTO_TEST							0x261A
-#define HP_KEY_MANUAL_TEST							0x261B
+#define HP_READ_KEY									0x2600
+//#define HP_KEY_COW_TEST							0x2601
+//#define HP_KEY_FEED_TEST							0x2602
+//#define HP_KEY_MILK_TEST							0x2603
+//#define HP_KEY_DECEAS_TEST						0x2604
+//#define HP_KEY_CALEND_TEST						0x2605
+//#define HP_KEY_SHIFT_TEST							0x2606
+//#define HP_KEY_1_TEST								0x2607
+//#define HP_KEY_2_TEST								0x2608
+//#define HP_KEY_3_TEST								0x2609
+//#define HP_KEY_4_TEST								0x260A
+//#define HP_KEY_5_TEST								0x260B
+//#define HP_KEY_6_TEST								0x260C
+//#define HP_KEY_7_TEST								0x260D
+//#define HP_KEY_8_TEST								0x260E
+//#define HP_KEY_9_TEST								0x260F
+//#define HP_KEY_CLEAR_TEST							0x2610
+//#define HP_KEY_0_TEST								0x2611
+//#define HP_KEY_ENTER_TEST							0x2612		// Lamp is enabled while key E is pressed
+//#define HP_KEY_ENTRAN_TEST						0x2613
+//#define HP_KEY_CENTRL_TEST						0x2614
+//#define HP_KEY_WATERTAP_TEST						0x2615		// Water Tap Symbol
+//#define HP_KEY_EXIT_TEST							0x2616
+//#define HP_KEY_STOP_TEST							0x2617
+//#define HP_KEY_MILK_V_TEST						0x2618
+//#define HP_KEY_CLUSTR_TEST						0x2619
+//#define HP_KEY_AUTO_TEST							0x261A
+//#define HP_KEY_MANUAL_TEST						0x261B
 
 // Read input status for input test
 // M1 ~ M3 on K3 connector
@@ -87,9 +88,9 @@
 // Read analog input
 // VSS input is on K4 connector
 // To read VSS Voltage
-#define HP_READ_ANALOG_INPUT_VSS					0x2801		// VSS ---> Current Sensing Circuit ---> PE4/AN4 (68HC11)
+#define HP_READ_ANALOG_INPUT_VSS					0x2804		// VSS ---> Current Sensing Circuit ---> PE4/AN4 (68HC11)
 // To read Motor Current
-#define HP_READ_ANALOG_INPUT_IMOTOR					0x2802		// Imotor -----------------------------> PE6/AN6 (68HC11)
+#define HP_READ_ANALOG_INPUT_IMOTOR					0x2806		// Imotor -----------------------------> PE6/AN6 (68HC11)
 
 // Set digital output
 // P1 ~ P3 outputs are on K6 connector
@@ -97,7 +98,7 @@
 #define HP_SET_OUTPUT_P2							0x2912		// PA4 (68HC11) ---> P2
 #define HP_SET_OUTPUT_P3							0x2913		// PA5 (68HC11) ---> P3
 // L output is on K13 connector for LAMP
-//#define HP_SET_OUTPUT_L								0x2914		// PD5 (68HC11) ---> L (LAMP)
+//#define HP_SET_OUTPUT_L							0x2914		// PD5 (68HC11) ---> L (LAMP)
 // Reset digital output
 // P1 ~ P3 outputs are on K6 connector
 #define HP_RESET_OUTPUT_P1							0x2901		// PA3 (68HC11) ---> P1
@@ -107,7 +108,7 @@
 //#define HP_RESET_OUTPUT_L							0x2904		// PD5 (68HC11) ---> L (LAMP)
 
 // Set Relay via PIC A
-//#define HP_SET_RELAY_1								0x2111		// RB5 (PIC-A) -> RB5a ---> Inverter ---> Relay 1
+//#define HP_SET_RELAY_1							0x2111		// RB5 (PIC-A) -> RB5a ---> Inverter ---> Relay 1
 #define HP_SET_RELAY_3								0x2113		// RB0 (PIC-A) -> RB0a ---> Inverter ---> Relay 3
 #define HP_SET_RELAY_4								0x2114		// RB1 (PIC-A) -> RB1a ---> Inverter ---> Relay 4
 #define HP_SET_RELAY_5								0x2115		// RB2 (PIC-A) -> RB2a ---> Inverter ---> Relay 5
@@ -126,7 +127,7 @@
 #define	HP_MOTOR_STOP								0x22A2
 #define HP_BRAKE_ENABLE								0x22B1
 #define HP_BRAKE_DISABLE							0x22B2
-#define HP_READ_MOTOR_LEVEL							0x22C0		// READ PE7 (68HC11)
+#define HP_READ_MOTOR_LEVEL							0x22C7		// READ PE7 (68HC11)
 #define HP_MEASURE_MOTOR_BRAKE_TIME					0x22D0
 
 // 68HC11 MCU Response Code ----------------------------------------------------
