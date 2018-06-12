@@ -180,8 +180,11 @@ non_banked void PrintTestProg(void)
 
 non_banked void DisplayAll(void)
 {
-	disp_point = 0x3fff;
-	memory_set( DispTable, ' ', 10 );
+	disp_point = 0x03FF;
+//	memory_set( DispTable, '*', 10 );
+//	HandleWriteIic(KB_ADDRESS, IIC_DISPLAY_TEXT, 10, DispTable);
+//	WaitXSec(5);
+	memory_set( DispTable, '8', 10 );
 	HandleWriteIic(KB_ADDRESS, IIC_WRITE_POINT_INFO, 2, (unsigned char *)&disp_point );
 	HandleWriteIic(KB_ADDRESS, IIC_DISPLAY_TEXT, 10, DispTable);
 }
@@ -189,7 +192,8 @@ non_banked void DisplayAll(void)
 non_banked void DisplayClear(void)
 {
 	disp_point = 0;
-	memory_clear( DispTable, 10 ) ;
+//	memory_clear( DispTable, 10 );
+	memory_set( DispTable, ' ', 10 );
 	HandleWriteIic(KB_ADDRESS, IIC_WRITE_POINT_INFO, 2, (unsigned char *)&disp_point );
 	HandleWriteIic(KB_ADDRESS, IIC_DISPLAY_TEXT, 10, DispTable);
 }
@@ -202,6 +206,7 @@ non_banked unsigned short MeasureBrakeTime(void)
 	starttime = stoptime = Cnt10msec;
 	TurnMotorOff(0);
 	do {
+		WatchDog();
 		if ( ChkMtrInputLevel(0) ){
 			stoptime = Cnt10msec;
 			break;
@@ -516,61 +521,61 @@ non_banked void HpTest (void)
     	  break;
       case HP_SET_RELAY_3:		// PIC-A RB0 ---> Relay 3
     	  ExtPortCopy |= RY3;
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_4:		// PIC-A RB1 ---> Relay 4
     	  ExtPortCopy |= RY4;
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_5:		// PIC-A RB2 ---> Relay 5
     	  ExtPortCopy |= RY5;
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_6:		// PIC-A RB3 ---> Relay 6
     	  ExtPortCopy |= RY6;
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_SET_RELAY_7:		// PIC-A RB4 ---> Relay 7
     	  ExtPortCopy |= RY7;
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_3:	// PIC-A RB0 ---> Relay 3
     	  ExtPortCopy &= (0xFF - RY3);
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_4:	// PIC-A RB1 ---> Relay 4
     	  ExtPortCopy &= (0xFF - RY4);
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_5:	// PIC-A RB2 ---> Relay 5
     	  ExtPortCopy &= (0xFF - RY5);
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_6:	// PIC-A RB3 ---> Relay 6
     	  ExtPortCopy &= (0xFF - RY6);
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
       case HP_RESET_RELAY_7:	// PIC-A RB4 ---> Relay 7
     	  ExtPortCopy &= (0xFF - RY7);
-    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, &ExtPortCopy );
+    	  stat = HandleWriteIic( PICA_ADDRESS, IIC_WRITE_PORTB, 1, (unsigned char *)&ExtPortCopy );
           if ( stat ) Send( TEST_FAILED );
           else 		  Send( TEST_PASSED );
     	  break;
